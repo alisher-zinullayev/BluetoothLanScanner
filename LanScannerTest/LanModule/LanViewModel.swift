@@ -5,7 +5,7 @@ import LanScanner
 import Network
 import SwiftUI
 
-class ScanViewModel: ObservableObject {
+class LanViewModel: ObservableObject {
     
     // MARK: - Published Properties
     @Published var connectedDevices: [LanDevice] = []
@@ -132,7 +132,7 @@ class ScanViewModel: ObservableObject {
 }
 
 // MARK: - LanScannerDelegate
-extension ScanViewModel: LanScannerDelegate {
+extension LanViewModel: LanScannerDelegate {
     func lanScanHasUpdatedProgress(_ progress: CGFloat, address: String) {
         DispatchQueue.main.async {
             self.progress = progress

@@ -8,9 +8,9 @@
 import SwiftUI
 import LanScanner
 
-struct ContentView: View {
+struct MainLanView: View {
     
-    @StateObject var viewModel = ScanViewModel()
+    @StateObject var viewModel = LanViewModel()
     
     // Фильтрация устройств по имени
     var filteredDevices: [LanDevice] {
@@ -62,7 +62,7 @@ struct ContentView: View {
                     
                     // Список обнаруженных устройств
                     List(filteredDevices) { device in
-                        NavigationLink(destination: DeviceDetailView(device: device)) {
+                        NavigationLink(destination: LanDeviceDetailView(device: device)) {
                             HStack {
                                 // Иконка устройства
                                 Image(systemName: "desktopcomputer")

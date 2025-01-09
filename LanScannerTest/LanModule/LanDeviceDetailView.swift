@@ -2,7 +2,7 @@
 import SwiftUI
 import LanScanner
 
-struct DeviceDetailView: View {
+struct LanDeviceDetailView: View {
     let device: LanDevice
     
     var body: some View {
