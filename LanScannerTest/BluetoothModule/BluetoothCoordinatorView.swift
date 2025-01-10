@@ -46,29 +46,3 @@ struct BluetoothCoordinatorView: View {
         }
     }
 }
-
-//NavigationView {
-//    factory.makeBluetoothView(coordinator: coordinator)
-//        .navigationBarTitle("Bluetooth", displayMode: .inline)
-//        .background(
-//            NavigationLink(
-//                destination: BluetoothDeviceDetailView(device: extractDevice(from: coordinator.currentScreen)),
-//                tag: BluetoothCoordinator.Screen.deviceDetails(extractDevice(from: coordinator.currentScreen)),
-//                selection: Binding(
-//                    get: {
-//                        if case .deviceDetails(let device) = coordinator.currentScreen {
-//                            return BluetoothCoordinator.Screen.deviceDetails(device)
-//                        }
-//                        return nil
-//                    },
-//                    set: { newValue in
-//                        if case .deviceDetails(_) = newValue {
-//                            coordinator.currentScreen = newValue
-//                        }
-//                    }
-//                )
-//            ) {
-//                EmptyView()
-//            }
-//        )
-//}
