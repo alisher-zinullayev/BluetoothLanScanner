@@ -28,3 +28,4 @@ extension BluetoothDeviceObject {
 extension BluetoothDeviceObject : Identifiable {
 
 }
+

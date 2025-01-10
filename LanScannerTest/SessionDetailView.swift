@@ -38,49 +38,43 @@ struct SessionDetailView: View {
     var body: some View {
         List {
             if let bluetoothDevices = session.bluetoothDevices as? Set<BluetoothDeviceObject> {
-                Section(header: Text("Bluetooth Devices")) {
-                    bluetoothDeviceList(devices: bluetoothDevices)
-                }
+                bluetoothDeviceList(devices: bluetoothDevices)
             }
 
             if let lanDevices = session.lanDevices as? Set<LanDeviceObject> {
-                Section(header: Text("LAN Devices")) {
-                    lanDeviceList(devices: lanDevices)
-                }
+                lanDeviceList(devices: lanDevices)
             }
         }
         .navigationTitle("Session Details")
     }
 
+    @ViewBuilder
     private func bluetoothDeviceList(devices: Set<BluetoothDeviceObject>) -> some View {
-        let deviceArray = Array(devices)
-
-        return ForEach(deviceArray, id: \.id) { device in
-            NavigationLink(
-                destination: BluetoothDeviceDetailView(device: device)
-            ) {
-                VStack(alignment: .leading) {
-                    Text("Name: \(device.name ?? "Unknown")")
-                    Text("UUID: \(device.uuid ?? "Unknown")")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+        Section(header: Text("Bluetooth Devices")) {
+            ForEach(Array(devices), id: \.id) { device in
+                NavigationLink(destination: BluetoothDeviceDetailView(device: device.toDomain())) {
+                    VStack(alignment: .leading) {
+                        Text("Name: \(device.name ?? "Unknown")")
+                            .font(.headline)
+                        Text("UUID: \(device.uuid ?? "Unknown")")
+                            .font(.subheadline)
+                    }
                 }
             }
         }
     }
 
+    @ViewBuilder
     private func lanDeviceList(devices: Set<LanDeviceObject>) -> some View {
-        let deviceArray = Array(devices)
-
-        return ForEach(deviceArray, id: \.id) { device in
-            NavigationLink(
-                destination: LanDeviceDetailView(device: device)
-            ) {
-                VStack(alignment: .leading) {
-                    Text("IP: \(device.ipAddress ?? "Unknown")")
-                    Text("MAC: \(device.mac ?? "Unknown")")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+        Section(header: Text("LAN Devices")) {
+            ForEach(Array(devices), id: \.id) { device in
+                NavigationLink(destination: LanDeviceDetailViewObject(device: device)) {
+                    VStack(alignment: .leading) {
+                        Text("IP: \(device.ipAddress ?? "Unknown")")
+                            .font(.headline)
+                        Text("Name: \(device.name ?? "Unknown")")
+                            .font(.subheadline)
+                    }
                 }
             }
         }
