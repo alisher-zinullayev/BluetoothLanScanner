@@ -11,7 +11,7 @@ import SwiftUI
 struct LanScannerTestApp: App {
     var body: some Scene {
         WindowGroup {
-            MainLanView()
+            MainCoordinatorView()
         }
     }
 }

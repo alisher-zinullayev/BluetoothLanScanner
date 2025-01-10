@@ -33,11 +33,18 @@ class LanViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
+    
+    private let coordinator: LanCoordinator
     // MARK: - Init
-    init() {
+    init(coordinator: LanCoordinator) {
+        self.coordinator = coordinator
         setupNetworkMonitor()
         setupSearch()
     }
+    
+    @MainActor func showDeviceDetails(device: LanDevice) {
+            coordinator.showDeviceDetails(device: device)
+        }
     
     deinit {
         monitor?.cancel()
@@ -131,7 +138,6 @@ class LanViewModel: ObservableObject {
     }
 }
 
-// MARK: - LanScannerDelegate
 extension LanViewModel: LanScannerDelegate {
     func lanScanHasUpdatedProgress(_ progress: CGFloat, address: String) {
         DispatchQueue.main.async {
@@ -141,20 +147,11 @@ extension LanViewModel: LanScannerDelegate {
     }
 
     func lanScanDidFindNewDevice(_ device: LanDevice) {
-//        DispatchQueue.main.async {
-//            // Создаём объект LanDevice из данных библиотеки
-//            let newDevice = LanDevice(
-//                name: device.name,
-//                ipAddress: device.ipAddress,
-//                mac: device.mac,
-//                brand: device.brand
-//            )
-//            // Добавляем устройство только если его ещё нет в списке
-//            if !self.connectedDevices.contains(where: { $0.id == newDevice.id }) {
-//                self.connectedDevices.append(newDevice)
-//            }
-//        }
-        connectedDevices.append(device)
+        DispatchQueue.main.async {
+            if !self.connectedDevices.contains(where: { $0.id == device.id }) {
+                self.connectedDevices.append(device)
+            }
+        }
     }
 
     func lanScanDidFinishScanning() {
@@ -164,7 +161,7 @@ extension LanViewModel: LanScannerDelegate {
         }
     }
     
-    // Если протокол LanScannerDelegate поддерживает обработку ошибок, добавь метод:
+    // Если протокол LanScannerDelegate поддерживает обработку ошибок, добавьте метод:
     /*
     func lanScanDidFailWithError(_ error: Error) {
         DispatchQueue.main.async {

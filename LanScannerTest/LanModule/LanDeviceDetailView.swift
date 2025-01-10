@@ -30,7 +30,8 @@ struct LanDeviceDetailView: View {
                     Text("MAC-адрес:")
                         .fontWeight(.semibold)
                     Spacer()
-                    Text(device.mac)
+                    Text(device.mac == "02:00:00:00:00:00" ? "Недоступно" : device.mac)
+                        .foregroundColor(device.mac == "02:00:00:00:00:00" ? .red : .primary)
                 }
                 
                 HStack {

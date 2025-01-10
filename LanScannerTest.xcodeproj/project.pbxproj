@@ -278,6 +278,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LanScannerTest/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Это приложение использует Bluetooth для сканирования доступных устройств.";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Это приложение использует локальную сеть для обнаружения устройств.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -310,6 +311,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LanScannerTest/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Это приложение использует Bluetooth для сканирования доступных устройств.";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Это приложение использует локальную сеть для обнаружения устройств.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

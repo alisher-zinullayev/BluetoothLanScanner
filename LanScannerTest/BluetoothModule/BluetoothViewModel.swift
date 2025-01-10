@@ -14,9 +14,11 @@ class BluetoothViewModel: ObservableObject {
     @Published var alertItem: BluetoothScanAlert? = nil
     
     private var bluetoothService = BluetoothService()
+    private var coordinator: BluetoothCoordinatorProtocol
     private var cancellables = Set<AnyCancellable>()
     
-    init() {
+    init(coordinator: BluetoothCoordinatorProtocol) {
+        self.coordinator = coordinator
         setupBindings()
     }
     
@@ -62,14 +64,18 @@ class BluetoothViewModel: ObservableObject {
         bluetoothService.startScanning()
         
         // Остановка сканирования через 15 секунд и отображение сообщения о завершении
-        DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
-            self.isScanning = false
-            self.saveScanResults()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 15) { [weak self] in
+            self?.isScanning = false
+            self?.saveScanResults()
         }
     }
     
     private func saveScanResults() {
         let count = bluetoothDevices.count
         self.alertItem = .completion("Сканирование завершено. Найдено устройств: \(count)")
+    }
+    
+    @MainActor func showDeviceDetails(device: BluetoothDevice) {
+        coordinator.showDeviceDetails(device: device)
     }
 }
