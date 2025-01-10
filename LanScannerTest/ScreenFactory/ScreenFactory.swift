@@ -64,3 +64,27 @@ extension ScreenFactory: LanCoordinatorFactory {
         LanCoordinatorView(factory: self, coordinator: coordinator as! LanCoordinator)
     }
 }
+
+//extension ScreenFactory: ScanHistoryCoordinatorFactory {
+//    func makeScanHistoryView() -> ScanHistoryView {
+//        ScanHistoryView()
+//    }
+//}
+
+extension ScreenFactory: ScanHistoryViewFactory {
+    func makeScanHistoryView(coordinator: ScanHistoryCoordinator) -> ScanHistoryView {
+        ScanHistoryView(coordinator: coordinator)
+    }
+
+    func makeSessionDetailView(session: ScanSession, coordinator: ScanHistoryCoordinator) -> SessionDetailView {
+        SessionDetailView(session: session, coordinator: coordinator)
+    }
+
+    func makeLanDeviceDetailView(device: LanDeviceObject) -> LanDeviceDetailViewObject {
+        LanDeviceDetailViewObject(device: device)
+    }
+
+    func makeBluetoothDeviceDetailObjectView(device: BluetoothDevice) -> BluetoothDeviceDetailView {
+        BluetoothDeviceDetailView(device: device)
+    }
+}

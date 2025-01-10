@@ -24,3 +24,11 @@ protocol LanViewFactory {
 protocol MainCoordinatorViewFactory {
     func makeMainCoordinatorView() -> MainCoordinatorView
 }
+
+@MainActor
+protocol ScanHistoryViewFactory {
+    func makeScanHistoryView(coordinator: ScanHistoryCoordinator) -> ScanHistoryView
+    func makeSessionDetailView(session: ScanSession, coordinator: ScanHistoryCoordinator) -> SessionDetailView
+    func makeLanDeviceDetailView(device: LanDeviceObject) -> LanDeviceDetailViewObject
+    func makeBluetoothDeviceDetailObjectView(device: BluetoothDevice) -> BluetoothDeviceDetailView
+}

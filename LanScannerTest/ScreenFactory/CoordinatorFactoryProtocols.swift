@@ -12,3 +12,5 @@ protocol BluetoothCoordinatorFactory: BluetoothViewFactory {}
 protocol LanCoordinatorFactory: LanViewFactory {}
 
 protocol AppCoordinatorFactory: MainCoordinatorViewFactory, BluetoothCoordinatorFactory, LanCoordinatorFactory {}
+
+protocol ScanHistoryCoordinatorFactory: ScanHistoryViewFactory {}

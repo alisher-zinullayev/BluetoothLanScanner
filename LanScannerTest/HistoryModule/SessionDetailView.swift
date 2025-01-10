@@ -7,33 +7,14 @@
 
 import SwiftUI
 
-//struct SessionDetailView: View {
-//    let session: ScanSession
-//
-//    var body: some View {
-//        List {
-//            if let bluetoothDevices = session.bluetoothDevices as? Set<BluetoothDeviceObject> {
-//                Section(header: Text("Bluetooth Devices")) {
-//                    ForEach(Array(bluetoothDevices), id: \.id) { device in
-//                        Text("Name: \(device.name ?? "Unknown")")
-//                    }
-//                }
-//            }
-//
-//            if let lanDevices = session.lanDevices as? Set<LanDeviceObject> {
-//                Section(header: Text("LAN Devices")) {
-//                    ForEach(Array(lanDevices), id: \.id) { device in
-//                        Text("IP: \(device.ipAddress ?? "Unknown")")
-//                    }
-//                }
-//            }
-//        }
-//        .navigationTitle("Session Details")
-//    }
-//}
-
 struct SessionDetailView: View {
     let session: ScanSession
+    private let coordinator: ScanHistoryCoordinator
+
+    init(session: ScanSession, coordinator: ScanHistoryCoordinator) {
+        self.session = session
+        self.coordinator = coordinator
+    }
 
     var body: some View {
         List {
@@ -52,12 +33,16 @@ struct SessionDetailView: View {
     private func bluetoothDeviceList(devices: Set<BluetoothDeviceObject>) -> some View {
         Section(header: Text("Bluetooth Devices")) {
             ForEach(Array(devices), id: \.id) { device in
-                NavigationLink(destination: BluetoothDeviceDetailView(device: device.toDomain())) {
+                Button(action: {
+                    coordinator.showBluetoothDeviceDetails(device: device)
+                }) {
                     VStack(alignment: .leading) {
                         Text("Name: \(device.name ?? "Unknown")")
                             .font(.headline)
+                            .foregroundColor(.primary)
                         Text("UUID: \(device.uuid ?? "Unknown")")
                             .font(.subheadline)
+                            .foregroundColor(.secondary)
                     }
                 }
             }
@@ -68,12 +53,16 @@ struct SessionDetailView: View {
     private func lanDeviceList(devices: Set<LanDeviceObject>) -> some View {
         Section(header: Text("LAN Devices")) {
             ForEach(Array(devices), id: \.id) { device in
-                NavigationLink(destination: LanDeviceDetailViewObject(device: device)) {
+                Button(action: {
+                    coordinator.showLanDeviceDetails(device: device)
+                }) {
                     VStack(alignment: .leading) {
                         Text("IP: \(device.ipAddress ?? "Unknown")")
                             .font(.headline)
+                            .foregroundColor(.primary)
                         Text("Name: \(device.name ?? "Unknown")")
                             .font(.subheadline)
+                            .foregroundColor(.secondary)
                     }
                 }
             }
