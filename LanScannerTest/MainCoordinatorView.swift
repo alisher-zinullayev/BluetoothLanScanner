@@ -11,6 +11,7 @@ struct MainCoordinatorView: View {
     enum Tab {
         case bluetooth
         case lan
+        case history
     }
     
     @State private var selectedTab: Tab = .bluetooth
@@ -38,6 +39,12 @@ struct MainCoordinatorView: View {
                     Label("LAN", systemImage: "network")
                 }
                 .tag(Tab.lan)
+            
+            ScanHistoryView()
+                .tabItem {
+                    Label("История", systemImage: "clock")
+                }
+                .tag(Tab.history)
         }
     }
 }
