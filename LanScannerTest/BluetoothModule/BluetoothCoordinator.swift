@@ -34,6 +34,12 @@ final class BluetoothCoordinator: Coordinator {
     }
 
     @Published var currentScreen: Screen? = nil
+    
+    private let factory: BluetoothViewFactory
+    
+    init(factory: BluetoothViewFactory) {
+        self.factory = factory
+    }
 }
 
 extension BluetoothCoordinator: BluetoothCoordinatorProtocol {

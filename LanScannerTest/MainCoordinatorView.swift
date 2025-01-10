@@ -15,23 +15,25 @@ struct MainCoordinatorView: View {
     
     @State private var selectedTab: Tab = .bluetooth
     
+    private let screenFactory: ScreenFactory
     private let bluetoothCoordinator: BluetoothCoordinator
     private let lanCoordinator: LanCoordinator
     
-    init() {
-        bluetoothCoordinator = .init()
-        lanCoordinator = .init()
+    init(screenFactory: ScreenFactory) {
+        bluetoothCoordinator = BluetoothCoordinator(factory: screenFactory)
+        lanCoordinator = LanCoordinator(factory: screenFactory)
+        self.screenFactory = screenFactory
     }
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            BluetoothCoordinatorView(coordinator: bluetoothCoordinator)
+            screenFactory.makeBluetoothCoordinatorView(coordinator: bluetoothCoordinator)
                 .tabItem {
                     Label("Bluetooth", systemImage: "dot.radiowaves.left.and.right")
                 }
                 .tag(Tab.bluetooth)
             
-            LanCoordinatorView(coordinator: lanCoordinator)
+            screenFactory.makeLanCoordinatorView(coordinator: lanCoordinator)
                 .tabItem {
                     Label("LAN", systemImage: "network")
                 }
@@ -39,7 +41,7 @@ struct MainCoordinatorView: View {
         }
     }
 }
-
-#Preview {
-    MainCoordinatorView()
-}
+//
+//#Preview {
+//    MainCoordinatorView()
+//}

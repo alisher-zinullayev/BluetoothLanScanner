@@ -35,6 +35,12 @@ final class LanCoordinator: Coordinator {
     }
 
     @Published var currentScreen: Screen? = nil
+    
+    private let factory: LanViewFactory
+    
+    init(factory: LanViewFactory) {
+        self.factory = factory
+    }
 }
 
 

@@ -34,9 +34,9 @@ class LanViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     
-    private let coordinator: LanCoordinator
+    private let coordinator: LanCoordinatorProtocol
     // MARK: - Init
-    init(coordinator: LanCoordinator) {
+    init(coordinator: LanCoordinatorProtocol) {
         self.coordinator = coordinator
         setupNetworkMonitor()
         setupSearch()

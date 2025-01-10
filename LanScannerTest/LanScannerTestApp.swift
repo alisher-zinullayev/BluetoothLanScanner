@@ -11,7 +11,9 @@ import SwiftUI
 struct LanScannerTestApp: App {
     var body: some Scene {
         WindowGroup {
-            MainCoordinatorView()
+            let appFactory = AppFactory()
+            let screenFactory = ScreenFactory(appFactory: appFactory)
+            screenFactory.makeMainCoordinatorView()
         }
     }
 }

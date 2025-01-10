@@ -8,31 +8,25 @@
 import SwiftUI
 
 struct BluetoothCoordinatorView: View {
+    private let factory: BluetoothViewFactory
     @ObservedObject private var coordinator: BluetoothCoordinator
     
-    init(coordinator: BluetoothCoordinator) {
+    init(factory: BluetoothViewFactory, coordinator: BluetoothCoordinator) {
+        self.factory = factory
         self.coordinator = coordinator
     }
     
     var body: some View {
         NavigationView {
-            BluetoothView(viewModel: BluetoothViewModel(coordinator: coordinator))
+            factory.makeBluetoothView(coordinator: coordinator)
                 .navigationBarTitle("Bluetooth", displayMode: .inline)
                 .background(
                     NavigationLink(
-                        destination: BluetoothDeviceDetailView(device: extractDevice(from: coordinator.currentScreen)),
-                        tag: BluetoothCoordinator.Screen.deviceDetails(extractDevice(from: coordinator.currentScreen)),
-                        selection: Binding(
-                            get: {
-                                if case .deviceDetails(let device) = coordinator.currentScreen {
-                                    return BluetoothCoordinator.Screen.deviceDetails(device)
-                                }
-                                return nil
-                            },
-                            set: { newValue in
-                                if case .deviceDetails(_) = newValue {
-                                    coordinator.currentScreen = newValue
-                                }
+                        destination: destinationView,
+                        isActive: Binding(
+                            get: { coordinator.currentScreen != nil },
+                            set: { isActive in
+                                if !isActive { coordinator.currentScreen = nil }
                             }
                         )
                     ) {
@@ -42,10 +36,39 @@ struct BluetoothCoordinatorView: View {
         }
     }
     
-    private func extractDevice(from screen: BluetoothCoordinator.Screen?) -> BluetoothDevice {
-        if case .deviceDetails(let device) = screen {
-            return device
+    @ViewBuilder
+    private var destinationView: some View {
+        if let screen = coordinator.currentScreen,
+           case .deviceDetails(let device) = screen {
+            factory.makeBluetoothDeviceDetailView(device: device)
+        } else {
+            EmptyView()
         }
-        return BluetoothDevice(id: UUID(), name: "Unknown", uuid: "Unknown", rssi: 0, status: "Unknown")
     }
 }
+
+//NavigationView {
+//    factory.makeBluetoothView(coordinator: coordinator)
+//        .navigationBarTitle("Bluetooth", displayMode: .inline)
+//        .background(
+//            NavigationLink(
+//                destination: BluetoothDeviceDetailView(device: extractDevice(from: coordinator.currentScreen)),
+//                tag: BluetoothCoordinator.Screen.deviceDetails(extractDevice(from: coordinator.currentScreen)),
+//                selection: Binding(
+//                    get: {
+//                        if case .deviceDetails(let device) = coordinator.currentScreen {
+//                            return BluetoothCoordinator.Screen.deviceDetails(device)
+//                        }
+//                        return nil
+//                    },
+//                    set: { newValue in
+//                        if case .deviceDetails(_) = newValue {
+//                            coordinator.currentScreen = newValue
+//                        }
+//                    }
+//                )
+//            ) {
+//                EmptyView()
+//            }
+//        )
+//}

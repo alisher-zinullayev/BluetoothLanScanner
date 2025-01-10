@@ -13,12 +13,13 @@ class BluetoothViewModel: ObservableObject {
     @Published var isScanning: Bool = false
     @Published var alertItem: BluetoothScanAlert? = nil
     
-    private var bluetoothService = BluetoothService()
+    private var bluetoothService: BluetoothService
     private var coordinator: BluetoothCoordinatorProtocol
     private var cancellables = Set<AnyCancellable>()
     
-    init(coordinator: BluetoothCoordinatorProtocol) {
+    init(coordinator: BluetoothCoordinatorProtocol, bluetoothService: BluetoothService) {
         self.coordinator = coordinator
+        self.bluetoothService = bluetoothService
         setupBindings()
     }
     
