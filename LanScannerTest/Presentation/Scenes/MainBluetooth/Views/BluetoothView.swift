@@ -17,6 +17,11 @@ struct BluetoothView: View {
             deviceList
         }
         .navigationTitle("Bluetooth Сканер")
+        .searchable(
+            text: $viewModel.searchText,
+            placement: .navigationBarDrawer(displayMode: .automatic),
+            prompt: "Поиск устройств"
+        )
         .alert(item: $viewModel.alertItem, content: alertView(for:))
     }
 }
@@ -33,7 +38,7 @@ private extension BluetoothView {
     }
 
     var deviceList: some View {
-        List(viewModel.bluetoothDevices) { device in
+        List(viewModel.filteredDevices) { device in
             BluetoothDeviceRow(device: device) {
                 viewModel.showDeviceDetails(device: device)
             }

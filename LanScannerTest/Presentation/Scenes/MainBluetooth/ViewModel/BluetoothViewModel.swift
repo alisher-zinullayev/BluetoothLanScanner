@@ -12,10 +12,19 @@ class BluetoothViewModel: ObservableObject {
     @Published var bluetoothDevices: [BluetoothDevice] = []
     @Published var isScanning: Bool = false
     @Published var alertItem: BluetoothScanAlert? = nil
+    @Published var searchText: String = ""
 
     private var bluetoothService: BluetoothService
     private var coordinator: BluetoothCoordinatorProtocol
     private var cancellables = Set<AnyCancellable>()
+    
+    var filteredDevices: [BluetoothDevice] {
+        if searchText.isEmpty {
+            return bluetoothDevices
+        } else {
+            return bluetoothDevices.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        }
+    }
 
     init(coordinator: BluetoothCoordinatorProtocol, bluetoothService: BluetoothService) {
         self.coordinator = coordinator
