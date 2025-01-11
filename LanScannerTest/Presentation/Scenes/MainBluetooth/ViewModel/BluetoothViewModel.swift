@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class BluetoothViewModel: ObservableObject {
+final class BluetoothViewModel: ObservableObject {
     @Published var bluetoothDevices: [BluetoothDevice] = []
     @Published var isScanning: Bool = false
     @Published var alertItem: BluetoothScanAlert? = nil

@@ -11,7 +11,7 @@ import LanScanner
 import Network
 import SwiftUI
 
-class LanViewModel: ObservableObject {
+final class LanViewModel: ObservableObject {
     @Published var connectedDevices: [LanDevice] = []
     @Published var progress: CGFloat = 0.0
     @Published var title: String = "Сканирование LAN..."
@@ -26,7 +26,6 @@ class LanViewModel: ObservableObject {
     @Published var isScanning: Bool = false
     
     private var lastProgressUpdate = Date()
-
     private var scanner: LanScanner?
     private var monitor: NWPathMonitor?
     private let networkQueue = DispatchQueue(label: "NetworkMonitor")
@@ -46,9 +45,9 @@ class LanViewModel: ObservableObject {
     deinit {
         monitor?.cancel()
     }
-
+    
     private func setupNetworkMonitor() {
-        monitor = NWPathMonitor()
+        monitor = NWPathMonitor(requiredInterfaceType: .wifi)
         monitor?.pathUpdateHandler = { [weak self] path in
             DispatchQueue.main.async {
                 if path.status == .satisfied {
@@ -79,6 +78,7 @@ class LanViewModel: ObservableObject {
         progress = 0.0
         title = "Сканирование LAN..."
         isScanning = true
+        
         scanner = LanScanner(delegate: self)
         scanner?.start()
 
