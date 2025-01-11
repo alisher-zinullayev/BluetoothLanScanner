@@ -24,6 +24,8 @@ class LanViewModel: ObservableObject {
     @Published var showErrorAlert: Bool = false
     @Published var errorMessage: String = ""
     @Published var isScanning: Bool = false
+    
+    private var lastProgressUpdate = Date()
 
     private var scanner: LanScanner?
     private var monitor: NWPathMonitor?
@@ -69,8 +71,7 @@ class LanViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
-
-    // MARK: - Scanning Methods
+    
     func startScan() {
         guard scanner == nil else { return }
 
@@ -78,7 +79,6 @@ class LanViewModel: ObservableObject {
         progress = 0.0
         title = "Сканирование LAN..."
         isScanning = true
-
         scanner = LanScanner(delegate: self)
         scanner?.start()
 
@@ -93,9 +93,13 @@ class LanViewModel: ObservableObject {
     }
 
     func stopScan() {
+        guard isScanning else { return }
         scanner?.stop()
         scanner = nil
         isScanning = false
+        withAnimation(.linear(duration: 0.1)) {
+            self.progress = 1.0
+        }
         title = "Сканирование завершено"
         alertMessage = "Найдено устройств: \(connectedDevices.count)"
         showAlert = true
@@ -117,8 +121,7 @@ class LanViewModel: ObservableObject {
         }
     }
 
-    private func filterDevices(searchText: String) {
-    }
+    private func filterDevices(searchText: String) { }
 
     func showToast(message: String) {
         toastMessage = message
@@ -139,7 +142,13 @@ class LanViewModel: ObservableObject {
 extension LanViewModel: LanScannerDelegate {
     func lanScanHasUpdatedProgress(_ progress: CGFloat, address: String) {
         DispatchQueue.main.async {
-            self.progress = progress
+            let now = Date()
+            guard now.timeIntervalSince(self.lastProgressUpdate) > 0.05 else { return }
+            self.lastProgressUpdate = now
+
+            withAnimation(.linear(duration: 0.15)) {
+                self.progress = progress
+            }
             self.title = address
         }
     }
@@ -154,6 +163,10 @@ extension LanViewModel: LanScannerDelegate {
 
     func lanScanDidFinishScanning() {
         DispatchQueue.main.async {
+            withAnimation(.linear(duration: 0.1)) {
+                self.progress = 1.0
+            }
+
             self.stopScan()
             self.showToast(message: "Сканирование завершено. Найдено \(self.connectedDevices.count) устройств.")
         }

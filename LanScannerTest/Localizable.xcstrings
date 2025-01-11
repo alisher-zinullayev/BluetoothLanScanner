@@ -380,6 +380,7 @@
       }
     },
     "Перезапустить сканирование" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
