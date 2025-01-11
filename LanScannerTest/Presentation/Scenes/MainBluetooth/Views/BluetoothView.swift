@@ -13,7 +13,7 @@ struct BluetoothView: View {
     var body: some View {
         VStack {
             scanningIndicator
-            scanButton
+            ScanButtonView(viewModel: viewModel)
             deviceList
         }
         .navigationTitle("Bluetooth Сканер")
@@ -30,22 +30,6 @@ private extension BluetoothView {
                     .padding()
             }
         }
-    }
-
-    var scanButton: some View {
-        Button(action: {
-            viewModel.startScan()
-        }) {
-            Text(viewModel.isScanning ? "Сканирование..." : "Начать сканирование")
-                .font(.title2)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(viewModel.isScanning ? Color.gray : Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(10)
-                .padding([.leading, .trailing], 20)
-        }
-        .disabled(viewModel.isScanning)
     }
 
     var deviceList: some View {

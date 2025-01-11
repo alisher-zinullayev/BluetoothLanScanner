@@ -31,7 +31,6 @@ class LanViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private let coordinator: LanCoordinatorProtocol
 
-    // MARK: - Init
     init(coordinator: LanCoordinatorProtocol) {
         self.coordinator = coordinator
         setupNetworkMonitor()
@@ -46,7 +45,6 @@ class LanViewModel: ObservableObject {
         monitor?.cancel()
     }
 
-    // MARK: - Network Monitoring
     private func setupNetworkMonitor() {
         monitor = NWPathMonitor()
         monitor?.pathUpdateHandler = { [weak self] path in
@@ -63,7 +61,6 @@ class LanViewModel: ObservableObject {
         monitor?.start(queue: networkQueue)
     }
 
-    // MARK: - Search Setup
     private func setupSearch() {
         $searchText
             .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
@@ -120,12 +117,9 @@ class LanViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Filtering Method
     private func filterDevices(searchText: String) {
-        // Logic for filtering devices (already handled in View)
     }
 
-    // MARK: - Toast Method
     func showToast(message: String) {
         toastMessage = message
         showToast = true
@@ -136,14 +130,12 @@ class LanViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Error Handling
     func showError(message: String) {
         errorMessage = message
         showErrorAlert = true
     }
 }
 
-// MARK: - LanScannerDelegate
 extension LanViewModel: LanScannerDelegate {
     func lanScanHasUpdatedProgress(_ progress: CGFloat, address: String) {
         DispatchQueue.main.async {

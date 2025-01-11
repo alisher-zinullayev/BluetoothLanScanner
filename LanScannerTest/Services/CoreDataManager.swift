@@ -37,7 +37,6 @@ final class CoreDataManager {
         }
     }
 
-    // Сохранение Bluetooth устройства
     func saveBluetoothDevice(
         id: UUID,
         name: String?,
@@ -57,7 +56,6 @@ final class CoreDataManager {
         saveContext()
     }
 
-    // Сохранение LAN устройства
     func saveLanDevice(
         id: UUID,
         ipAddress: String,
@@ -77,7 +75,6 @@ final class CoreDataManager {
         saveContext()
     }
 
-    // Создание сессии
     func createScanSession() -> ScanSession {
         let session = ScanSession(context: context)
         session.id = UUID()

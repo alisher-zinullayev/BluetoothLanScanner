@@ -11,15 +11,7 @@ import CoreData
 
 @objc(BluetoothDeviceObject)
 public class BluetoothDeviceObject: NSManagedObject {
-//    func toDomain() -> BluetoothDevice {
-//        BluetoothDevice(
-//            id: id ?? UUID(),
-//            name: name ?? "",
-//            uuid: uuid ?? "",
-//            rssi: Int(rssi),
-//            status: status ?? ""
-//        )
-//    }
+    
 }
 
 extension BluetoothDeviceObject {

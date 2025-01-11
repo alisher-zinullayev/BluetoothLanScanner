@@ -64,7 +64,6 @@ struct LanView: View {
         .padding(.top, 10)
     }
     
-    // MARK: - Scan Duration Section
     private var scanDurationSection: some View {
         VStack(alignment: .leading) {
             Text("Время сканирования: \(Int(viewModel.scanDuration)) секунд")
@@ -143,7 +142,6 @@ struct LanView: View {
         }
     }
     
-    // MARK: - Toast
     private var toast: some View {
         VStack {
             Spacer()
@@ -162,7 +160,6 @@ struct LanView: View {
         }
     }
     
-    // MARK: - Alerts
     private func alertContent() -> Alert {
         Alert(
             title: Text(viewModel.alertMessage.contains("Нет доступа") ? "Ошибка" : "Сканирование завершено"),
@@ -179,7 +176,6 @@ struct LanView: View {
         )
     }
     
-    // MARK: - Filtered Devices
     private var filteredDevices: [LanDevice] {
         if viewModel.searchText.isEmpty {
             return viewModel.connectedDevices
