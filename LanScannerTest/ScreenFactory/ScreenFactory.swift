@@ -65,12 +65,6 @@ extension ScreenFactory: LanCoordinatorFactory {
     }
 }
 
-//extension ScreenFactory: ScanHistoryCoordinatorFactory {
-//    func makeScanHistoryView() -> ScanHistoryView {
-//        ScanHistoryView()
-//    }
-//}
-
 extension ScreenFactory: ScanHistoryViewFactory {
     func makeScanHistoryView(coordinator: ScanHistoryCoordinator) -> ScanHistoryView {
         ScanHistoryView(coordinator: coordinator)

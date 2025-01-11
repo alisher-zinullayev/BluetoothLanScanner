@@ -7,26 +7,6 @@
 
 import SwiftUI
 
-//struct ScanHistoryView: View {
-//    @State private var sessions: [ScanSession] = []
-//
-//    var body: some View {
-//        NavigationView {
-//            List(sessions, id: \.id) { session in
-//                NavigationLink(
-//                    destination: SessionDetailView(session: session)
-//                ) {
-//                    Text(session.timestamp?.formatted() ?? "Unknown Date")
-//                }
-//            }
-//            .navigationTitle("Scan History")
-//            .onAppear {
-//                sessions = CoreDataManager.shared.fetchScanSessions()
-//            }
-//        }
-//    }
-//}
-
 struct ScanHistoryView: View {
     private let coordinator: ScanHistoryCoordinator
     @State private var sessions: [ScanSession] = []

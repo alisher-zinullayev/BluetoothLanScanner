@@ -12,54 +12,49 @@ struct LanDeviceDetailViewObject: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            HStack {
-                Image(systemName: "desktopcomputer")
-                    .resizable()
-                    .frame(width: 60, height: 60)
-                    .foregroundColor(.green)
-                Text(device.name ?? "Unknown")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-            }
-            .padding(.bottom, 20)
+            headerView
+                .padding(.bottom, 20)
 
-            VStack(alignment: .leading, spacing: 10) {
-                HStack {
-                    Text("Имя устройства:")
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text(device.name ?? "Unknown")
-                }
-
-                HStack {
-                    Text("MAC-адрес:")
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text(device.mac ?? "Unknown")
-                        .foregroundColor((device.mac ?? "") == "02:00:00:00:00:00" ? .red : .primary)
-                }
-
-                HStack {
-                    Text("Бренд:")
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text(device.brand ?? "Unknown")
-                }
-
-                HStack {
-                    Text("IP-адрес:")
-                        .fontWeight(.semibold)
-                    Spacer()
-                    Text(device.ipAddress ?? "Unknown")
-                }
-            }
-            .padding()
-            .background(Color(UIColor.secondarySystemBackground))
-            .cornerRadius(10)
+            detailsView
+                .padding()
+                .background(Color(UIColor.secondarySystemBackground))
+                .cornerRadius(10)
 
             Spacer()
         }
         .padding()
         .navigationTitle("Детали устройства")
+    }
+
+    private var headerView: some View {
+        HStack {
+            Image(systemName: "desktopcomputer")
+                .resizable()
+                .frame(width: 60, height: 60)
+                .foregroundColor(.green)
+            Text(device.name ?? "Unknown")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+        }
+    }
+
+    private var detailsView: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            detailRow(title: "Имя устройства:", value: device.name ?? "Unknown")
+            detailRow(title: "MAC-адрес:", value: device.mac ?? "Unknown",
+                      valueColor: (device.mac ?? "") == "02:00:00:00:00:00" ? .red : .primary)
+            detailRow(title: "Бренд:", value: device.brand ?? "Unknown")
+            detailRow(title: "IP-адрес:", value: device.ipAddress ?? "Unknown")
+        }
+    }
+
+    private func detailRow(title: String, value: String, valueColor: Color = .primary) -> some View {
+        HStack {
+            Text(title)
+                .fontWeight(.semibold)
+            Spacer()
+            Text(value)
+                .foregroundColor(valueColor)
+        }
     }
 }

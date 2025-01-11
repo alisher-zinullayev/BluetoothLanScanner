@@ -19,17 +19,19 @@ struct ScanHistoryCoordinatorView: View {
     var body: some View {
         NavigationView {
             factory.makeScanHistoryView(coordinator: coordinator)
-                .background(
-                    NavigationLink(
-                        destination: destinationView,
-                        isActive: isActiveBinding
-                    ) {
-                        EmptyView()
-                    }
-                )
+                .background(navigationLink)
         }
     }
-    
+
+    private var navigationLink: some View {
+        NavigationLink(
+            destination: destinationView,
+            isActive: isActiveBinding
+        ) {
+            EmptyView()
+        }
+    }
+
     private var isActiveBinding: Binding<Bool> {
         Binding(
             get: { coordinator.currentScreen != nil },
