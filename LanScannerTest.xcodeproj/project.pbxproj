@@ -7,22 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		43C49E9B2D31A90600DD56DA /* LanDeviceObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C49E972D31A90600DD56DA /* LanDeviceObject+CoreDataClass.swift */; };
-		43C49E9C2D31A90600DD56DA /* LanDeviceObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C49E982D31A90600DD56DA /* LanDeviceObject+CoreDataProperties.swift */; };
-		43C49E9D2D31A90600DD56DA /* ScanSession+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C49E992D31A90600DD56DA /* ScanSession+CoreDataClass.swift */; };
-		43C49E9E2D31A90600DD56DA /* ScanSession+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C49E9A2D31A90600DD56DA /* ScanSession+CoreDataProperties.swift */; };
-		43C49E9F2D31A90600DD56DA /* BluetoothDeviceObject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C49E952D31A90600DD56DA /* BluetoothDeviceObject+CoreDataClass.swift */; };
-		43C49EA02D31A90600DD56DA /* BluetoothDeviceObject+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C49E962D31A90600DD56DA /* BluetoothDeviceObject+CoreDataProperties.swift */; };
 		43D59D142D304E3B00723BAE /* LanScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 43D59D132D304E3B00723BAE /* LanScanner */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		43C49E952D31A90600DD56DA /* BluetoothDeviceObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BluetoothDeviceObject+CoreDataClass.swift"; sourceTree = "<group>"; };
-		43C49E962D31A90600DD56DA /* BluetoothDeviceObject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BluetoothDeviceObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		43C49E972D31A90600DD56DA /* LanDeviceObject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanDeviceObject+CoreDataClass.swift"; sourceTree = "<group>"; };
-		43C49E982D31A90600DD56DA /* LanDeviceObject+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanDeviceObject+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		43C49E992D31A90600DD56DA /* ScanSession+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScanSession+CoreDataClass.swift"; sourceTree = "<group>"; };
-		43C49E9A2D31A90600DD56DA /* ScanSession+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScanSession+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		43D59D012D304DA900723BAE /* LanScannerTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LanScannerTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -62,12 +50,6 @@
 		43D59CF82D304DA900723BAE = {
 			isa = PBXGroup;
 			children = (
-				43C49E952D31A90600DD56DA /* BluetoothDeviceObject+CoreDataClass.swift */,
-				43C49E962D31A90600DD56DA /* BluetoothDeviceObject+CoreDataProperties.swift */,
-				43C49E972D31A90600DD56DA /* LanDeviceObject+CoreDataClass.swift */,
-				43C49E982D31A90600DD56DA /* LanDeviceObject+CoreDataProperties.swift */,
-				43C49E992D31A90600DD56DA /* ScanSession+CoreDataClass.swift */,
-				43C49E9A2D31A90600DD56DA /* ScanSession+CoreDataProperties.swift */,
 				43D59D032D304DA900723BAE /* LanScannerTest */,
 				43D59D022D304DA900723BAE /* Products */,
 			);
@@ -160,12 +142,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43C49E9B2D31A90600DD56DA /* LanDeviceObject+CoreDataClass.swift in Sources */,
-				43C49E9C2D31A90600DD56DA /* LanDeviceObject+CoreDataProperties.swift in Sources */,
-				43C49E9D2D31A90600DD56DA /* ScanSession+CoreDataClass.swift in Sources */,
-				43C49E9E2D31A90600DD56DA /* ScanSession+CoreDataProperties.swift in Sources */,
-				43C49E9F2D31A90600DD56DA /* BluetoothDeviceObject+CoreDataClass.swift in Sources */,
-				43C49EA02D31A90600DD56DA /* BluetoothDeviceObject+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
