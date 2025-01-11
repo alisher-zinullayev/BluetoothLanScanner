@@ -13,9 +13,9 @@ final class BluetoothService: NSObject, ObservableObject {
     @Published private(set) var discoveredDevices: [BluetoothDevice] = []
     @Published private(set) var isBluetoothOn: Bool = false
     @Published private(set) var errorMessage: String?
-
+    
     private var centralManager: CBCentralManager!
-
+    
     override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
@@ -31,16 +31,16 @@ final class BluetoothService: NSObject, ObservableObject {
             withServices: nil,
             options: [CBCentralManagerScanOptionAllowDuplicatesKey: false]
         )
-
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
             self.centralManager.stopScan()
         }
     }
-
+    
     func stopScanning() {
         centralManager.stopScan()
     }
-
+    
     private func updateState(with state: CBManagerState) {
         let bluetoothState = BluetoothState.from(state)
         isBluetoothOn = (state == .poweredOn)
@@ -53,25 +53,45 @@ extension BluetoothService: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         updateState(with: central.state)
     }
-
+    
     func centralManager(
         _ central: CBCentralManager,
         didDiscover peripheral: CBPeripheral,
         advertisementData: [String: Any],
         rssi RSSI: NSNumber
     ) {
+        let status = determineStatus(for: peripheral, advertisementData: advertisementData)
+        
         let device = BluetoothDevice(
             id: peripheral.identifier,
             name: peripheral.name ?? "Неизвестное устройство",
             uuid: peripheral.identifier.uuidString,
             rssi: RSSI.intValue,
-            status: "Обнаружено"
+            status: status
         )
         
         if !discoveredDevices.contains(where: { $0.id == device.id }) {
             DispatchQueue.main.async {
                 self.discoveredDevices.append(device)
             }
+        }
+    }
+    
+    private func determineStatus(for peripheral: CBPeripheral, advertisementData: [String: Any]) -> String {
+        switch peripheral.state {
+        case .connected:
+            return "Подключено"
+        case .connecting:
+            return "Подключение в процессе"
+        case .disconnected:
+            if let isConnectable = advertisementData[CBAdvertisementDataIsConnectable] as? Bool {
+                return isConnectable ? "Доступно для подключения" : "Недоступно для подключения"
+            }
+            return "Неизвестное состояние"
+        case .disconnecting:
+            return "Отключение"
+        @unknown default:
+            return "Неизвестное состояние"
         }
     }
 }
