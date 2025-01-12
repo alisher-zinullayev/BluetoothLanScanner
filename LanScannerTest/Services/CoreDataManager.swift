@@ -94,3 +94,27 @@ final class CoreDataManager {
         }
     }
 }
+
+extension CoreDataManager {
+    func fetchScanSessions(on date: Date) -> [ScanSession] {
+        let request: NSFetchRequest<ScanSession> = ScanSession.fetchRequest()
+
+        let calendar = Calendar.current
+        guard let startOfDay = calendar.startOfDay(for: date) as NSDate?,
+              let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay as Date) as NSDate? else {
+            return []
+        }
+        
+        request.predicate = NSPredicate(
+            format: "timestamp >= %@ AND timestamp < %@",
+            startOfDay, endOfDay
+        )
+        
+        do {
+            return try context.fetch(request)
+        } catch {
+            print("Error fetching filtered ScanSessions: \(error)")
+            return []
+        }
+    }
+}
