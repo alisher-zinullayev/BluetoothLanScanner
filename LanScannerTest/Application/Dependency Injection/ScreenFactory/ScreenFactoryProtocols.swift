@@ -27,8 +27,8 @@ protocol MainCoordinatorViewFactory {
 
 @MainActor
 protocol ScanHistoryViewFactory {
-    func makeScanHistoryView(coordinator: ScanHistoryCoordinator) -> ScanHistoryView
-    func makeSessionDetailView(session: ScanSession, coordinator: ScanHistoryCoordinator) -> SessionDetailView
+    func makeScanHistoryView(coordinator: ScanHistoryCoordinatorProtocol) -> ScanHistoryView
+    func makeSessionDetailView(session: ScanSession, coordinator: ScanHistoryCoordinatorProtocol) -> SessionDetailView
     func makeLanDeviceDetailView(device: LanDeviceObject) -> LanDeviceDetailViewObject
     func makeBluetoothDeviceDetailObjectView(device: BluetoothDevice) -> BluetoothDeviceDetailView
 }

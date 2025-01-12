@@ -67,12 +67,14 @@ extension ScreenFactory: LanCoordinatorFactory {
 
 // MARK: - ScanHistoryViewFactory
 extension ScreenFactory: ScanHistoryViewFactory {
-    func makeScanHistoryView(coordinator: ScanHistoryCoordinator) -> ScanHistoryView {
-        ScanHistoryView(coordinator: coordinator)
+    func makeScanHistoryView(coordinator: ScanHistoryCoordinatorProtocol) -> ScanHistoryView {
+        let viewModel = ScanHistoryViewModel(coordinator: coordinator)
+        return ScanHistoryView(viewModel: viewModel)
     }
 
-    func makeSessionDetailView(session: ScanSession, coordinator: ScanHistoryCoordinator) -> SessionDetailView {
-        SessionDetailView(session: session, coordinator: coordinator)
+    func makeSessionDetailView(session: ScanSession, coordinator: ScanHistoryCoordinatorProtocol) -> SessionDetailView {
+        let viewModel = SessionDetailViewModel(session: session, coordinator: coordinator)
+        return SessionDetailView(viewModel: viewModel)
     }
 
     func makeLanDeviceDetailView(device: LanDeviceObject) -> LanDeviceDetailViewObject {

@@ -8,54 +8,41 @@
 import SwiftUI
 
 struct ScanHistoryView: View {
-    private let coordinator: ScanHistoryCoordinator
-    @State private var sessions: [ScanSession] = []
+    @StateObject var viewModel: ScanHistoryViewModel
     
-    @State private var selectedDate = Date()
-
-    init(coordinator: ScanHistoryCoordinator) {
-        self.coordinator = coordinator
+    var body: some View {
+        VStack {
+            dateFilter
+            
+            List(viewModel.sessions, id: \.id) { session in
+                Button(action: {
+                    viewModel.showSessionDetails(session: session)
+                }) {
+                    Text(session.timestamp?.formatted() ?? "Unknown Date")
+                }
+            }
+        }
+        .navigationTitle("Scan History")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            viewModel.onAppear()
+        }
     }
 
-    var body: some View {
-            VStack {
-                dateFilter
-                
-                List(sessions, id: \.id) { session in
-                    Button(action: {
-                        coordinator.showSessionDetails(session: session)
-                    }) {
-                        Text(session.timestamp?.formatted() ?? "Unknown Date")
-                            .foregroundColor(.primary)
-                    }
-                }
-                .listStyle(.plain)
+    private var dateFilter: some View {
+        HStack {
+            DatePicker(
+                "Выберите дату:",
+                selection: $viewModel.selectedDate,
+                displayedComponents: [.date]
+            )
+            .datePickerStyle(.compact)
+            
+            Button("Фильтровать") {
+                viewModel.reloadSessions(for: viewModel.selectedDate)
             }
-            .navigationTitle("Scan History")
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                reloadSessions(for: selectedDate)
-            }
+            .buttonStyle(.borderedProminent)
         }
-        
-        private var dateFilter: some View {
-            HStack {
-                DatePicker(
-                    "Выберите дату:",
-                    selection: $selectedDate,
-                    displayedComponents: [.date]
-                )
-                .datePickerStyle(.compact)
-                
-                Button("Фильтровать") {
-                    reloadSessions(for: selectedDate)
-                }
-                .buttonStyle(.borderedProminent)
-            }
-            .padding()
-        }
-    
-        private func reloadSessions(for date: Date) {
-            sessions = CoreDataManager.shared.fetchScanSessions(on: date)
-        }
+        .padding()
+    }
 }
