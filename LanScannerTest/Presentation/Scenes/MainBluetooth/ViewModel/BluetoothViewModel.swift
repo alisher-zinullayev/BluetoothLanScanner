@@ -73,6 +73,8 @@ final class BluetoothViewModel: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 15) { [weak self] in
             self?.isScanning = false
             self?.saveToCoreData()
+            let count = self?.bluetoothDevices.count
+            self?.alertItem = .completion("Найдено устройств: \(count ?? 0)")
         }
     }
 
