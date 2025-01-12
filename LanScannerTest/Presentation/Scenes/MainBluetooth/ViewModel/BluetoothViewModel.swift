@@ -8,12 +8,11 @@
 import Foundation
 import Combine
 
-final class BluetoothViewModel: ObservableObject {
+final class BluetoothViewModel: BaseViewModel {
     @Published var bluetoothDevices: [BluetoothDevice] = []
     @Published var isScanning: Bool = false
-    @Published var alertItem: BluetoothScanAlert? = nil
     @Published var searchText: String = ""
-
+    
     private var bluetoothService: BluetoothService
     private var coordinator: BluetoothCoordinatorProtocol
     private var cancellables = Set<AnyCancellable>()
@@ -25,59 +24,61 @@ final class BluetoothViewModel: ObservableObject {
             return bluetoothDevices.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         }
     }
-
+    
     init(coordinator: BluetoothCoordinatorProtocol, bluetoothService: BluetoothService) {
         self.coordinator = coordinator
         self.bluetoothService = bluetoothService
+        super.init()
         setupBindings()
     }
-
+    
     private func setupBindings() {
         bluetoothService.$discoveredDevices
             .receive(on: DispatchQueue.main)
             .assign(to: \.bluetoothDevices, on: self)
             .store(in: &cancellables)
-
+        
         bluetoothService.$isBluetoothOn
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isOn in
                 if !isOn {
                     if let message = self?.bluetoothService.errorMessage {
-                        self?.alertItem = .error(message)
+                        self?.handleError(message)
                     }
                 }
             }
             .store(in: &cancellables)
-
+        
         bluetoothService.$errorMessage
             .receive(on: DispatchQueue.main)
             .sink { [weak self] message in
+                guard let self = self else { return }
                 if let message = message {
-                    self?.alertItem = .error(message)
+                    self.handleError(message)
                 }
             }
             .store(in: &cancellables)
     }
-
+    
     func startScan() {
         guard bluetoothService.isBluetoothOn else {
             if let message = bluetoothService.errorMessage {
-                self.alertItem = .error(message)
+                self.handleError(message)
             }
             return
         }
         isScanning = true
-        alertItem = nil
         bluetoothService.startScanning()
-
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 15) { [weak self] in
-            self?.isScanning = false
-            self?.saveToCoreData()
-            let count = self?.bluetoothDevices.count
-            self?.alertItem = .completion("Найдено устройств: \(count ?? 0)")
+            guard let self = self else { return }
+            self.isScanning = false
+            self.saveToCoreData()
+            let count = self.bluetoothDevices.count
+            self.handleCompletion("Найдено устройств: \(count)")
         }
     }
-
+    
     private func saveToCoreData() {
         let session = CoreDataManager.shared.createScanSession()
         for device in bluetoothDevices {
@@ -91,7 +92,7 @@ final class BluetoothViewModel: ObservableObject {
             )
         }
     }
-
+    
     @MainActor func showDeviceDetails(device: BluetoothDevice) {
         coordinator.showDeviceDetails(device: device)
     }

@@ -22,7 +22,13 @@ struct BluetoothView: View {
             placement: .navigationBarDrawer(displayMode: .automatic),
             prompt: "Поиск устройств"
         )
-        .alert(item: $viewModel.alertItem, content: alertView(for:))
+        .alert(item: $viewModel.appAlert) { appAlert in
+            Alert(
+                title: Text(appAlert.title),
+                message: Text(appAlert.message),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
 }
 

@@ -416,6 +416,7 @@
       }
     },
     "Сканирование завершено" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

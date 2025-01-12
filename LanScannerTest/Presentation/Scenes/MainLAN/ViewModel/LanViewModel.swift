@@ -11,18 +11,14 @@ import LanScanner
 import Network
 import SwiftUI
 
-final class LanViewModel: ObservableObject {
+final class LanViewModel: BaseViewModel {
     @Published var connectedDevices: [LanDevice] = []
     @Published var progress: CGFloat = 0.0
     @Published var title: String = "Сканирование LAN..."
-    @Published var showAlert: Bool = false
-    @Published var alertMessage: String = ""
     @Published var showToast: Bool = false
     @Published var toastMessage: String = ""
     @Published var scanDuration: Double = 15.0
     @Published var searchText: String = ""
-    @Published var showErrorAlert: Bool = false
-    @Published var errorMessage: String = ""
     @Published var isScanning: Bool = false
     
     private var lastProgressUpdate = Date()
@@ -34,6 +30,7 @@ final class LanViewModel: ObservableObject {
 
     init(coordinator: LanCoordinatorProtocol) {
         self.coordinator = coordinator
+        super.init()
         setupNetworkMonitor()
         setupSearch()
     }
@@ -45,23 +42,24 @@ final class LanViewModel: ObservableObject {
     deinit {
         monitor?.cancel()
     }
-    
+
     private func setupNetworkMonitor() {
         monitor = NWPathMonitor(requiredInterfaceType: .wifi)
         monitor?.pathUpdateHandler = { [weak self] path in
             DispatchQueue.main.async {
+                guard let self = self else { return }
+                
                 if path.status == .satisfied {
-                    self?.startScan()
+                    self.startScan()
                 } else {
-                    self?.alertMessage = "Нет доступа к локальной сети."
-                    self?.showAlert = true
-                    self?.stopScan()
+                    self.handleError("Нет доступа к локальной сети.")
+                    self.stopScan()
                 }
             }
         }
         monitor?.start(queue: networkQueue)
     }
-
+    
     private func setupSearch() {
         $searchText
             .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
@@ -101,28 +99,14 @@ final class LanViewModel: ObservableObject {
             self.progress = 1.0
         }
         title = "Сканирование завершено"
-        alertMessage = "Найдено устройств: \(connectedDevices.count)"
-        showAlert = true
+        
+        self.handleCompletion("Найдено устройств: \(connectedDevices.count)")
 
         saveToCoreData()
     }
 
-    private func saveToCoreData() {
-        let session = CoreDataManager.shared.createScanSession()
-        for device in connectedDevices {
-            CoreDataManager.shared.saveLanDevice(
-                id: UUID(),
-                ipAddress: device.ipAddress,
-                name: device.name,
-                brand: device.brand,
-                mac: device.mac,
-                session: session
-            )
-        }
-    }
-
     private func filterDevices(searchText: String) { }
-
+    
     func showToast(message: String) {
         toastMessage = message
         showToast = true
@@ -131,11 +115,6 @@ final class LanViewModel: ObservableObject {
                 self.showToast = false
             }
         }
-    }
-
-    func showError(message: String) {
-        errorMessage = message
-        showErrorAlert = true
     }
 }
 
@@ -169,6 +148,23 @@ extension LanViewModel: LanScannerDelegate {
 
             self.stopScan()
             self.showToast(message: "Сканирование завершено. Найдено \(self.connectedDevices.count) устройств.")
+        }
+    }
+}
+
+// MARK: - Core Data Logic
+extension LanViewModel {
+    private func saveToCoreData() {
+        let session = CoreDataManager.shared.createScanSession()
+        for device in connectedDevices {
+            CoreDataManager.shared.saveLanDevice(
+                id: UUID(),
+                ipAddress: device.ipAddress,
+                name: device.name,
+                brand: device.brand,
+                mac: device.mac,
+                session: session
+            )
         }
     }
 }

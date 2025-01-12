@@ -24,8 +24,13 @@ struct LanView: View {
                     placement: .navigationBarDrawer(displayMode: .automatic),
                     prompt: "Поиск устройств"
                 )
-                .alert(isPresented: $viewModel.showAlert, content: alertContent)
-                .alert(isPresented: $viewModel.showErrorAlert, content: errorAlertContent)
+                .alert(item: $viewModel.appAlert) { appAlert in
+                    Alert(
+                        title: Text(appAlert.title),
+                        message: Text(appAlert.message),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
             
             if viewModel.showToast {
                 ToastView(message: viewModel.toastMessage)
@@ -146,26 +151,6 @@ private extension LanView {
                 Label("Скопировать IP", systemImage: "doc.on.doc")
             }
         }
-    }
-}
-
-private extension LanView {
-    func alertContent() -> Alert {
-        Alert(
-            title: Text(
-                viewModel.alertMessage.contains("Нет доступа") ? "Ошибка" : "Сканирование завершено"
-            ),
-            message: Text(viewModel.alertMessage),
-            dismissButton: .default(Text("OK"))
-        )
-    }
-    
-    func errorAlertContent() -> Alert {
-        Alert(
-            title: Text("Ошибка"),
-            message: Text(viewModel.errorMessage),
-            dismissButton: .default(Text("OK"))
-        )
     }
 }
 
