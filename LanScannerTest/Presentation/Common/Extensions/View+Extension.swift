@@ -23,3 +23,9 @@ extension View {
         self.modifier(ShimmerEffect())
     }
 }
+
+extension View {
+    func tintColor(_ color: Color) -> some View {
+        modifier(TintColor(color: color))
+    }
+}
