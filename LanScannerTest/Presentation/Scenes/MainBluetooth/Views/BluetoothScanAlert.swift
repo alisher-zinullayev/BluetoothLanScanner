@@ -14,9 +14,9 @@ enum BluetoothScanAlert: Identifiable {
     var id: String {
         switch self {
         case .error(let message):
-            return "error_\(message)"
+            return "\(message)"
         case .completion(let message):
-            return "completion_\(message)"
+            return "\(message)"
         }
     }
 }
